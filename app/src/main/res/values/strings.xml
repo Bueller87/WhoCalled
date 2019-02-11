@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Who Called</string>
+    <string name="permissions_question">This app needs these permissions to perform properly.</string>
+    <string name="permissions_title">Permission Denied</string>
+    <string name="permissions_retry">Retry</string>
+    <string name="permissions_exit_app">Exit App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading_call_log">Loading Call Log...</string>
+    <string name="call_log_list_cd">Call Log List</string>
+    <string name="unknown_contact">Unknown</string>
+    <string name="make_a_call_cd">Make a call</string>
+    <string name="voice_mail_text">Voicemail</string>
+    <string name="incoming_call_cd">Incoming Call</string>
+    <string name="outgoing_call_cd">Outgoing Call</string>
+    <string name="missed_call_cd">Missed Call</string>
+    <string name="cancelled_call_cd">Cancelled Call</string>
+</resources>
