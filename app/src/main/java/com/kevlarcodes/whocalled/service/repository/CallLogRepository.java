@@ -73,6 +73,7 @@ public class CallLogRepository {
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
                     Uri.encode(phoneNumber));
             String[] projection = {ContactsContract.PhoneLookup.DISPLAY_NAME};
+            //TODO: call query off the main thread
             Cursor cursor = cr.query(uri,
                     projection,
                     null,
@@ -121,6 +122,7 @@ public class CallLogRepository {
 
         try {
             //TODO: narrow down projection
+            //TODO: eliminate MAX_LOG_SIZE and call query off the main thread (AsyncTask is simple enough)
             final Cursor cursor = mAppContext.getContentResolver().query(CallLog.Calls.CONTENT_URI,
                     null,
                     selection,

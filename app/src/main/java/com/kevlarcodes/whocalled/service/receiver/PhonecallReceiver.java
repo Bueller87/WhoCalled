@@ -26,7 +26,7 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
 
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
         //TODO: Test Broadcast Receiver with more flavors of Android.
-        //Tested with API 19, 24, 27
+        //Tested with API 19, 24, 27,28
         //Only API 19 receives NEW_OUTGOING_CALL intent
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             try {
