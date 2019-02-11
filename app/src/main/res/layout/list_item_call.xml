@@ -9,7 +9,6 @@
     android:layout_marginTop = "8dp"
     android:orientation = "vertical">
 
-
     <ImageView
         android:id = "@+id/call_type"
         android:layout_width = "40dp"
@@ -22,6 +21,7 @@
         />
 
     <!--<TextView
+        //TODO: create dynamic avatar like builtin/Google call log
         android:id = "@+id/avatar_text"
         android:layout_width = "40dp"
         android:layout_height = "40dp"
@@ -37,6 +37,7 @@
         android:fontFamily="sans-serif"
         android:textStyle = "bold"/>-->
 
+    <!--two line layout -->
     <LinearLayout
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
@@ -61,7 +62,6 @@
                 tools:text = "Kevin Burns"
                 android:textColor = "@color/black_dark"
                 android:textSize = "16sp"
-
                 android:fontFamily="sans-serif"/>
 
         </LinearLayout>
@@ -69,7 +69,6 @@
         <LinearLayout
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
-            android:paddingTop = "4dp"
             android:orientation = "horizontal">
 
             <TextView
@@ -83,25 +82,7 @@
                 android:fontFamily="sans-serif"
                 tools:text = "1/7 - 2:45 AM"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
-
-    <!--<TextView
-        android:id = "@+id/call_duration"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_alignParentEnd = "true"
-        android:layout_marginEnd = "16dp"
-        android:layout_marginTop = "20dp"
-        android:maxLines = "1"
-        android:maxWidth = "40dp"
-        tools:text = "19 min"
-        android:textColor = "@color/discreet_dark"
-        android:textSize = "12sp"
-        android:fontFamily="sans-serif"/>-->
-
     <ImageView
         android:id = "@+id/call_button"
         android:layout_width = "24dp"
@@ -112,10 +93,10 @@
         android:layout_marginBottom = "24dp"
         android:layout_marginStart = "16dp"
         android:layout_marginEnd = "32dp"
-
         android:contentDescription = "@string/make_a_call_cd"
         android:src="@drawable/ic_call_grey600_48dp" />
 
+    <!--custom divider starting at 72dp -->
     <View
         android:layout_width = "match_parent"
         android:layout_height = "1dp"

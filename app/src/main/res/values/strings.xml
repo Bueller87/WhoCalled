@@ -10,7 +10,7 @@
     <string name="loading_call_log">Loading Call Log...</string>
     <string name="call_log_list_cd">Call Log List</string>
     <string name="unknown_contact">Unknown</string>
-    <string name="make_a_call_cd">Make a call</string>
+    <string name="make_a_call_cd">Place a call</string>
     <string name="voice_mail_text">Voicemail</string>
     <string name="incoming_call_cd">Incoming Call</string>
     <string name="outgoing_call_cd">Outgoing Call</string>

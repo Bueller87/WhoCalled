@@ -16,16 +16,23 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
     private static boolean isIncoming;
     private static String savedNumber;  //because the passed incoming is only valid in ringing
 
-
+    private void setSavedNumber(String newStr) {
+        if (newStr != null && newStr.length() > 0) {
+            savedNumber = newStr;
+        }
+    }
     @Override
     public void onReceive(Context context, Intent intent) {
 
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
-        //android.intent.action.NEW_OUTGOING_CALL
+        //TODO: Test Broadcast Receiver with more flavors of Android.
+        //Tested with API 19, 24, 27
+        //Only API 19 receives NEW_OUTGOING_CALL intent
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             try {
                 Log.d(TAG, "android.intent.action.NEW_OUTGOING_CALL");
-                savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+                String number = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+                setSavedNumber(number);
                 Log.d(TAG, "onReceive:NEW_OUTGOING_CALL " + savedNumber);
             } catch (Exception e) {
                 Log.d(TAG, "onReceive:NEW_OUTGOING_CALL:Exception ");
@@ -35,7 +42,7 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
         else{
             String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
             String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            savedNumber = number;
+            setSavedNumber(number);
             Log.d(TAG,String.format("onReceive:else: stateStr:%s, number:%s", stateStr, number));
             int state = 0;
             if(stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)){
@@ -49,7 +56,7 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
             }
 
 
-            onCallStateChanged(context, state, number);
+            onCallStateChanged(context, state, savedNumber);
         }
     }
 
@@ -74,8 +81,8 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
             case TelephonyManager.CALL_STATE_RINGING:
                 isIncoming = true;
                 callStartTime = new Date();
-                savedNumber = number;
-                onIncomingCallStarted(context, number, callStartTime);
+                //savedNumber = number;
+                onIncomingCallStarted(context, savedNumber, callStartTime);
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
                 //Transition of ringing->offhook are pickups of incoming calls.  Nothing done on them
@@ -89,7 +96,7 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
                 //Went to idle-  this is the end of a call.  What type depends on previous state(s)
                 if(lastState == TelephonyManager.CALL_STATE_RINGING){
                     //Ring but no pickup-  a miss
-                    Log.d(TAG, "onMissedCall: " + number + ", " + savedNumber);
+
                     onMissedCall(context, savedNumber, callStartTime);
                 }
                 else if(isIncoming){

@@ -2,6 +2,7 @@ package com.kevlarcodes.whocalled.view.adapter;
 
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import butterknife.ButterKnife;
 import com.kevlarcodes.whocalled.R;
 import com.kevlarcodes.whocalled.service.model.CallLogItem;
 import com.kevlarcodes.whocalled.service.repository.CallLogRepository;
+import com.kevlarcodes.whocalled.view.callback.CallLogClickCallback;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -26,8 +28,11 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
                                         Resources.getSystem().getConfiguration().locale);
     private static final DateFormat sDateInstance = DateFormat.getDateInstance(DateFormat.SHORT,
                                         Resources.getSystem().getConfiguration().locale);
-    public CallAdapter() {
+    @Nullable
+    private final CallLogClickCallback callClickCallback;
 
+    public CallAdapter(@Nullable CallLogClickCallback callClickCallback) {
+        this.callClickCallback = callClickCallback;
     }
 
     public void setCallList(List<CallLogItem> newList) {
@@ -42,13 +47,13 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.list_item_call,viewGroup,false );
         CallAdapter.CallViewHolder viewHolder = new CallAdapter.CallViewHolder(itemView);
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CallAdapter.CallViewHolder holder, int i) {
         holder.bind(mCallList.get(i));
-
     }
 
     @Override
@@ -63,11 +68,32 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
        TextView dateTextView;
        @BindView(R.id.call_type)
        ImageView callTypeImageView;
+       @BindView(R.id.call_button)
+       ImageView callButton;
 
+       View mItemView;
 
         public CallViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mItemView = itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callClickCallback != null) {
+                        callClickCallback.onRowClicked(mCallList.get(getAdapterPosition()));
+                    }
+                }
+            });
+
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callClickCallback != null) {
+                        callClickCallback.onMakeCallClicked(mCallList.get(getAdapterPosition()));
+                    }
+                }
+            });
         }
 
         public void bind(CallLogItem item) {
@@ -81,22 +107,22 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
             switch (item.getType()) {
                 case CallLogRepository.INCOMING:
                     callTypeImageView.setImageResource(R.drawable.received);
-                    callTypeImageView.setContentDescription(Resources.getSystem().
+                    callTypeImageView.setContentDescription(mItemView.getResources().
                                                     getString(R.string.incoming_call_cd));
                     break;
                 case CallLogRepository.OUTGOING:
                     callTypeImageView.setImageResource(R.drawable.sent);
-                    callTypeImageView.setContentDescription(Resources.getSystem().
+                    callTypeImageView.setContentDescription(mItemView.getResources().
                                                     getString(R.string.outgoing_call_cd));
                     break;
                 case CallLogRepository.MISSED:
                     callTypeImageView.setImageResource(R.drawable.missed);
-                    callTypeImageView.setContentDescription(Resources.getSystem().
+                    callTypeImageView.setContentDescription(mItemView.getResources().
                                                     getString(R.string.missed_call_cd));
                     break;
                 default:
                     callTypeImageView.setImageResource(R.drawable.cancelled);
-                    callTypeImageView.setContentDescription(Resources.getSystem()
+                    callTypeImageView.setContentDescription(mItemView.getResources()
                                                     .getString(R.string.cancelled_call_cd));
                     break;
             }
