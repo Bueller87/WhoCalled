@@ -4,18 +4,18 @@
     xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
-    android:layout_height = "72dp"
-    android:layout_marginTop = "8dp"
+    android:layout_height = "@dimen/height_72dp"
+    android:layout_marginTop = "@dimen/margin_8dp"
     android:orientation = "vertical">
 
     <ImageView
         android:id = "@+id/call_type"
-        android:layout_width = "40dp"
-        android:layout_height = "40dp"
-        android:layout_marginBottom = "16dp"
-        android:layout_marginStart = "16dp"
-        android:layout_marginEnd = "16dp"
-        android:layout_marginTop = "16dp"
+        android:layout_width = "@dimen/icon_size_40dp"
+        android:layout_height = "@dimen/icon_size_40dp"
+        android:layout_marginBottom = "@dimen/margin_16dp"
+        android:layout_marginStart = "@dimen/margin_16dp"
+        android:layout_marginEnd = "@dimen/margin_16dp"
+        android:layout_marginTop = "@dimen/margin_16dp"
         tools:background="@drawable/received"
         />
 
@@ -40,10 +40,10 @@
     <LinearLayout
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
-        android:layout_marginBottom = "16dp"
-        android:layout_marginEnd = "56dp"
-        android:layout_marginStart = "72dp"
-        android:layout_marginTop = "16dp"
+        android:layout_marginBottom = "@dimen/margin_16dp"
+        android:layout_marginEnd = "@dimen/margin_56dp"
+        android:layout_marginStart = "@dimen/margin_72dp"
+        android:layout_marginTop = "@dimen/margin_16dp"
         android:orientation = "vertical">
 
         <LinearLayout
@@ -55,12 +55,12 @@
                 android:id = "@+id/call_contact"
                 android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
-                android:layout_marginEnd = "16dp"
+                android:layout_marginEnd = "@dimen/margin_16dp"
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 tools:text = "Kevin Burns"
                 android:textColor = "@color/black_dark"
-                android:textSize = "16sp"
+                android:textSize = "@dimen/text_size_16sp"
                 android:fontFamily="sans-serif"/>
 
         </LinearLayout>
@@ -77,30 +77,30 @@
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:textColor = "@color/discreet_dark"
-                android:textSize = "12sp"
+                android:textSize = "@dimen/text_size_12sp"
                 android:fontFamily="sans-serif"
                 tools:text = "1/7 - 2:45 AM"/>
         </LinearLayout>
     </LinearLayout>
     <ImageView
         android:id = "@+id/call_button"
-        android:layout_width = "24dp"
-        android:layout_height = "24dp"
+        android:layout_width = "@dimen/icon_size_24dp"
+        android:layout_height = "@dimen/icon_size_24dp"
         android:layout_alignParentBottom = "true"
         android:layout_alignParentEnd = "true"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom = "24dp"
-        android:layout_marginStart = "16dp"
-        android:layout_marginEnd = "32dp"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:layout_marginBottom = "@dimen/margin_24dp"
+        android:layout_marginStart = "@dimen/margin_16dp"
+        android:layout_marginEnd = "@dimen/margin_32dp"
         android:contentDescription = "@string/make_a_call_cd"
         android:src="@drawable/ic_call_grey600_48dp" />
 
     <!--custom divider starting at 72dp -->
     <View
         android:layout_width = "match_parent"
-        android:layout_height = "1dp"
+        android:layout_height = "@dimen/height_1dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart = "72dp"
+        android:layout_marginStart = "@dimen/margin_72dp"
         android:background = "@color/discreet_light"/>
 
 </RelativeLayout>
