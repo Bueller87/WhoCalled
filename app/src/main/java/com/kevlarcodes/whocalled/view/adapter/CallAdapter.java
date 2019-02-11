@@ -9,21 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kevlarcodes.whocalled.R;
 import com.kevlarcodes.whocalled.service.model.CallLogItem;
 import com.kevlarcodes.whocalled.service.repository.CallLogRepository;
 import com.kevlarcodes.whocalled.view.callback.CallLogClickCallback;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder> {
-    private List<CallLogItem> mCallList= new ArrayList<>();
+    private final List<CallLogItem> mCallList= new ArrayList<>();
     private static final DateFormat sTimeInstance = DateFormat.getTimeInstance(DateFormat.SHORT,
                                         Resources.getSystem().getConfiguration().locale);
     private static final DateFormat sDateInstance = DateFormat.getDateInstance(DateFormat.SHORT,
@@ -46,9 +44,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
     public CallAdapter.CallViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.list_item_call,viewGroup,false );
-        CallAdapter.CallViewHolder viewHolder = new CallAdapter.CallViewHolder(itemView);
-
-        return viewHolder;
+        return new CallAdapter.CallViewHolder(itemView);
     }
 
     @Override
@@ -71,7 +67,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
        @BindView(R.id.call_button)
        ImageView callButton;
 
-       View mItemView;
+       final View mItemView;
 
         public CallViewHolder(@NonNull View itemView) {
             super(itemView);

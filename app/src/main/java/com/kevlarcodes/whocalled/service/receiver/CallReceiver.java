@@ -1,13 +1,9 @@
 package com.kevlarcodes.whocalled.service.receiver;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.util.Log;
-
 import com.kevlarcodes.whocalled.service.model.CallLogItem;
 import com.kevlarcodes.whocalled.service.repository.CallLogRepository;
-import com.kevlarcodes.whocalled.viewmodel.CallLogViewModel;
-
 import java.util.Date;
 
 public class CallReceiver extends PhonecallReceiver {
@@ -52,5 +48,4 @@ public class CallReceiver extends PhonecallReceiver {
         Log.d(TAG, "Override::onMissedCall: " + number);
         addNewCallToRepo(ctx, number,CallLogRepository.MISSED,0, start.getTime());
     }
-
 }

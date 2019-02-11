@@ -1,11 +1,6 @@
 package com.kevlarcodes.whocalled.service.model;
 
-
-import android.content.res.Resources;
 import android.telephony.PhoneNumberUtils;
-
-import com.kevlarcodes.whocalled.R;
-
 import java.util.Locale;
 
 public class CallLogItem {
@@ -55,6 +50,7 @@ public class CallLogItem {
     public void setName(String name) {
         this.name = name;
     }
+
     public boolean isVoiceMail() {
         return isVM;
     }
@@ -63,16 +59,15 @@ public class CallLogItem {
         isVM = VM;
     }
 
-
     public String getDisplayName(){
          if (getName() != null) {
             return getName();
         } else {
-            return getFormatedNumber();
+            return getFormattedNumber();
         }
     }
 
-    public String getFormatedNumber() {
+    private String getFormattedNumber() {
         String str = "";
         if (getNumber() != null) {
             str = PhoneNumberUtils.formatNumber(getNumber());
@@ -80,6 +75,7 @@ public class CallLogItem {
         return str;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public String toString() {
         return String.format(Locale.getDefault(),"name:%s, number:%s, duration:%d, date:%d, type:%d",

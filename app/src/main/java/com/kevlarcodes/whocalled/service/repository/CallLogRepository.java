@@ -2,18 +2,17 @@ package com.kevlarcodes.whocalled.service.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-
 import com.kevlarcodes.whocalled.R;
 import com.kevlarcodes.whocalled.service.model.CallLogItem;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CallLogRepository {
@@ -21,34 +20,36 @@ public class CallLogRepository {
     private static CallLogRepository callLogRepository;
     private static String mVoiceMailNumber;
     //App context used to query Content Provider
-    private Context mAppContext;
+    private final Context mAppContext;
     private static final String TAG = "CallLogRepository";
-    final MutableLiveData<List<CallLogItem>> mMutableLiveCallList = new MutableLiveData<>();
+    private final MutableLiveData<List<CallLogItem>> mMutableLiveCallList = new MutableLiveData<>();
     //Requirement:
     //1. Up to 50 call log item should be displayed
-    public static final int MAX_LOG_SIZE = 50;
-
+    private static final int MAX_LOG_SIZE = 50;
     //Call item types
     public static final int INCOMING = CallLog.Calls.INCOMING_TYPE;
     public static final int OUTGOING = CallLog.Calls.OUTGOING_TYPE;
     public static final int MISSED = CallLog.Calls.MISSED_TYPE;
-    //public static final int VOICEMAIL = CallLog.Calls.VOICEMAIL_TYPE; //requires API 21
-
     //filter call list constants
     public static final int INCOMING_CALLS = 672;
     public static final int OUTGOING_CALLS = 609;
     public static final int MISSED_CALLS = 874;
     public static final int ALL_CALLS = 814;
 
-    private static final int READ_CALL_LOG = 47;
     public static final int READ_LOGS = 725;
 
-
-
-    private CallLogRepository(Context context) {
-        //ensure app context, we don't want to cache an instance of an activity context
+    private CallLogRepository(final Context context) {
+        //ensure app context, no strong refs to activity contexts
         mAppContext = context.getApplicationContext();
         mVoiceMailNumber = getVoiceMailNumber(context);
+    }
+
+    public synchronized static CallLogRepository getInstance(Context context) {
+        //singleton pattern
+        if (callLogRepository == null) {
+            callLogRepository = new CallLogRepository(context);
+        }
+        return callLogRepository;
     }
 
     private String getVoiceMailNumber(Context context) {
@@ -64,25 +65,44 @@ public class CallLogRepository {
 
         return telNumberStr;
     }
-    public synchronized static CallLogRepository getInstance(Context context) {
-        //singleton pattern
-        if (callLogRepository == null) {
-            callLogRepository = new CallLogRepository(context);
+
+    private String lookupDisplayName(final String phoneNumber) {
+        String contactName = null;
+        try {
+            ContentResolver cr = mAppContext.getContentResolver();
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+                    Uri.encode(phoneNumber));
+            String[] projection = {ContactsContract.PhoneLookup.DISPLAY_NAME};
+            Cursor cursor = cr.query(uri,
+                    projection,
+                    null,
+                    projection,
+                    null);
+            cursor.moveToFirst();
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            cursor.close();
+        } catch (Exception e) {
+            Log.e(TAG, "lookupDisplayName Exception: " + e.getMessage());
         }
-        return callLogRepository;
+
+        return contactName;
     }
 
     public void addCallToLog(CallLogItem logItem) {
         List<CallLogItem> list = mMutableLiveCallList.getValue();
         if (list != null) {
+            if (logItem.getName() == null) {
+                Log.d(TAG, "addCallToLog: lookup name");
+                logItem.setName(lookupDisplayName(logItem.getNumber()));
+            }
             list.add(0,logItem );
         }
-        //signal observers
+        //update mutable live data
         mMutableLiveCallList.setValue(list);
     }
+
     public LiveData<List<CallLogItem>> getCallLog(int callType) {
         List<CallLogItem> logList = new ArrayList<>();
-
         String selection;
 
         switch (callType) {
@@ -100,6 +120,7 @@ public class CallLogRepository {
         }
 
         try {
+            //TODO: narrow down projection
             final Cursor cursor = mAppContext.getContentResolver().query(CallLog.Calls.CONTENT_URI,
                     null,
                     selection,
@@ -118,19 +139,7 @@ public class CallLogRepository {
                         cursor.getInt(typeCol),
                         cursor.getInt(durationCol),
                         cursor.getLong(dateCol)
-
                 );
-                /*logItem.setNumber(cursor.getString(numberCol));
-                if (mVoiceMailNumber.equals(logItem.getNumber())) {
-                    logItem.setVoiceMail(true);
-                    logItem.setName(mAppContext.getString(R.string.voice_mail_text));
-                } else {
-                    logItem.setVoiceMail(false);
-                    logItem.setName(cursor.getString(cachedNameCol));
-                }
-                logItem.setType(cursor.getInt(typeCol));
-                logItem.setDuration(cursor.getInt(durationCol));
-                logItem.setDate(cursor.getLong(dateCol));*/
                 logList.add(logItem);
             }
             cursor.close();
@@ -142,7 +151,6 @@ public class CallLogRepository {
         mMutableLiveCallList.setValue(logList);
         return mMutableLiveCallList;
     }
-
 
     public CallLogItem buildCallLogItem(String name, String number, int type, int duration, long date) {
         CallLogItem logItem = new CallLogItem();
@@ -159,4 +167,7 @@ public class CallLogRepository {
         logItem.setDate(date);
         return logItem;
     }
+
+
+
 }

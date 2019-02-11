@@ -1,6 +1,6 @@
 package com.kevlarcodes.whocalled.service.receiver;
-import java.util.Date;
 
+import java.util.Date;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.util.Log;
 
 public abstract class PhonecallReceiver extends BroadcastReceiver {
     private static final String TAG = CallReceiver.class.getSimpleName();
-    //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
-
+    //The receiver will be recreated whenever android feels like it.
+    // We need a static variable to remember data between instantiations
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private static Date callStartTime;
     private static boolean isIncoming;
@@ -67,11 +67,9 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
     protected void onOutgoingCallEnded(Context ctx, String number, Date start, Date end){}
     protected void onMissedCall(Context ctx, String number, Date start){}
 
-    //Deals with actual events
-
     //Incoming call-  goes from IDLE to RINGING when it rings, to OFFHOOK when it's answered, to IDLE when its hung up
     //Outgoing call-  goes from IDLE to OFFHOOK when it dials out, to IDLE when hung up
-    public void onCallStateChanged(Context context, int state, String number) {
+    private void onCallStateChanged(Context context, int state, String number) {
         if(lastState == state){
             //No change, debounce extras
             Log.d(TAG, "onCallStateChanged: No change, debounce extras");

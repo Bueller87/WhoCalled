@@ -3,7 +3,6 @@ package com.kevlarcodes.whocalled.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 
 import com.kevlarcodes.whocalled.service.model.CallLogItem;
 import com.kevlarcodes.whocalled.service.repository.CallLogRepository;
