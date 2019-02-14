@@ -4,6 +4,7 @@ project.ext {
     constraintLayout = "1.1.3"
     espresso_ver = "3.0.2"
     android_test_ver = "1.0.2"
+    butter_knife_ver = "8.8.1"
 }
 apply plugin: 'com.android.application'
 
@@ -44,8 +45,8 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$project.arch"
     annotationProcessor "android.arch.lifecycle:compiler:$project.arch"
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayout"
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation "com.jakewharton:butterknife:$butter_knife_ver"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butter_knife_ver"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "com.android.support:support-annotations:$android_test_ver"
@@ -54,4 +55,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_ver"
     androidTestImplementation "com.android.support.test:rules:$android_test_ver"
     androidTestImplementation "com.android.support.test:runner:$android_test_ver"
+    /*testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"*/
 }
