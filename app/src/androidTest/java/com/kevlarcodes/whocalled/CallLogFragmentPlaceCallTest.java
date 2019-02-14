@@ -67,7 +67,7 @@ public class CallLogFragmentPlaceCallTest {
                         0, MyViewAction.clickChildViewWithId(R.id.call_contact)));
 
         Intents.init();
-        intended(hasComponent("CallDetailsActivity"));
+        intended(hasComponent("NumberDetailsActivity"));
         Intents.release();
     }
 
